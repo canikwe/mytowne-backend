@@ -1,8 +1,8 @@
 class Api::V1::TagsController < ApplicationController
 
   def index
-    @tags = Tag.all
-    render json: @tags
+    @tags = Tag.all.each {|t| t.destroy if t.post_tags == []} #destroy all unused tags
+    render json: @tags, status: :accepted
   end
 
   def create
