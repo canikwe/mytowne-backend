@@ -5,4 +5,8 @@ class Tag < ApplicationRecord
   
   #Validations
   validates :name, presence: true, uniqueness: true
+
+  def count
+    self.post_tags.count
+  end
 end

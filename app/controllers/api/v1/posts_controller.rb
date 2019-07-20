@@ -1,4 +1,5 @@
 class Api::V1::PostsController < ApplicationController
+  skip_before_action :authorized, only: [:show, :index]
   before_action :get_post, only: [:show, :update, :destroy]
 
   def index
@@ -10,18 +11,11 @@ class Api::V1::PostsController < ApplicationController
     render json: @post
   end
 
-   def create
+  def create
     @post = Post.new(post_params[:post_info])
     if @post.save
-      post_params[:post_tags_attributes].each do |item_hash|
-        if item_hash[:tag_id].is_a? Integer 
-          @post.post_tags.create(item_hash)
-        else
-          #Creates a new tag and builds association through post_tags
-          new_tag = Tag.create(name: item_hash[:tag_id])
-          @post.post_tags.create(tag_id: new_tag[:id])
-        end
-      end
+      @post.update_post_tags(post_params[:post_tags_attributes])
+
     render json: @post, status: :accepted
     else
       render json: {errors: @post.errors.full_messages, status: :unprocessible_entity}
@@ -29,24 +23,13 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def update
-    #Remove and rebuild all post tags on update. !!!Discuss better ways to update this.
     if @post.update(post_params[:post_info])
-      @post.post_tags.destroy_all
-      post_params[:post_tags_attributes].each do |item_hash|
-        if item_hash[:tag_id].is_a? Integer 
-          @post.post_tags.create(item_hash)
-          # Tag.all.each do |t|
-          #   if t.post_tags == []
-          #     t.destroy
-          #   end
-          # end
-        else
-          # new tag handling 
-          new_tag = Tag.create(name: item_hash[:tag_id])
-          @post.post_tags.create(tag_id: new_tag[:id])
-        end
-      end
-    render json: @post
+      @post.update_post_tags(post_params[:post_tags_attributes])
+
+      #Remove any unused tags upon update
+      Tag.all.each { |t| t.destroy if t.post_tags == [] }
+
+      render json: {post: PostSerializer.new(@post), tags: Tag.all}, status: :success
     else
       render json: {errors: @post.errors.full_messages, status: :unprocessible_entity}
     end
@@ -58,7 +41,6 @@ class Api::V1::PostsController < ApplicationController
     render json: post
   end
 
-
   private
   def get_post
     @post = Post.find(params[:id])
@@ -66,6 +48,6 @@ class Api::V1::PostsController < ApplicationController
 
   def post_params
     #Formatted to accept nested attributes for post tags
-    params.require(:post).permit(post_info: [:id, :title, :content, :img, :user_id],  post_tags_attributes: [:id, :post_id, :tag_id, :name] )
+    params.require(:post).permit(post_info: [:id, :title, :content, :img, :user_id],  post_tags_attributes: [:id, :name, :status, :post_tag_id] )
   end
 end
