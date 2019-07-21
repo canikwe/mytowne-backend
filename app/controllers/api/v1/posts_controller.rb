@@ -29,7 +29,7 @@ class Api::V1::PostsController < ApplicationController
       #Remove any unused tags upon update
       Tag.all.each { |t| t.destroy if t.post_tags == [] }
 
-      render json: {post: PostSerializer.new(@post), tags: Tag.all}, status: :success
+      render json: {post: PostSerializer.new(@post), tags: Tag.all, status: :success}
     else
       render json: {errors: @post.errors.full_messages, status: :unprocessible_entity}
     end
