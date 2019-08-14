@@ -16,9 +16,9 @@ class Api::V1::PostsController < ApplicationController
     if @post.save
       @post.update_post_tags(post_params[:post_tags_attributes])
 
-    render json: @post, status: :accepted
+      render json: @post, status: :created
     else
-      render json: {errors: @post.errors.full_messages, status: :unprocessible_entity}
+      render json: {errors: @post.errors.full_messages, status: :unprocessible_entity}, status: :unprocessible_entity
     end
   end
 
@@ -29,9 +29,9 @@ class Api::V1::PostsController < ApplicationController
       #Remove any unused tags upon update
       Tag.all.each { |t| t.destroy if t.post_tags == [] }
 
-      render json: {post: PostSerializer.new(@post), tags: Tag.all, status: :success}
+      render json: {post: PostSerializer.new(@post), tags: Tag.all, status: :success}, status: :success
     else
-      render json: {errors: @post.errors.full_messages, status: :unprocessible_entity}
+      render json: {errors: @post.errors.full_messages, status: :unprocessible_entity}, status: :unprocessible_entity
     end
   end
   
