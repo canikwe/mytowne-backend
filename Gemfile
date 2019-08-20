@@ -48,3 +48,6 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "jwt", "~> 2.1"
+
+# Used for seed data
+gem "faker"
