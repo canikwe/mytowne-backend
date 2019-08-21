@@ -1,6 +1,5 @@
 class UserSerializer < ActiveModel::Serializer
   attributes :id, :name, :birth_date, :email, :username, :town, :avatar, :bio
-  has_many :posts
 
   def posts
     self.object.posts.map do |p|
