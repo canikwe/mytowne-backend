@@ -1,5 +1,5 @@
 class Api::V1::LikesController < ApplicationController
-  
+
   def create
     like = Like.create(like_params)
     render json: {post: PostSerializer.new(like.post), status: :success}

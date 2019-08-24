@@ -11,15 +11,6 @@ class Api::V1::UsersController < ApplicationController
     render json: { user: UserSerializer.new(current_user) }, status: :accepted
   end
 
-  # def login
-  #   @user = User.find_by(username: params[:username])
-  #   if @user && @user.authenticate(params[:password])
-  #     render json: @user
-  #   else
-  #     render json: {errors: "Username or password is incorrect", status: :unprocessible_entity}
-  #   end
-  # end
-
   def show
     render json: @user
   end
