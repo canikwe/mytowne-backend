@@ -16,7 +16,7 @@ class PostSerializer < ActiveModel::Serializer
   end
 
   def user
-    {id: self.object.user.id, avatar: self.object.user.avatar}
+    {id: self.object.user.id, avatar: self.object.user.avatar, name: self.object.user.name}
   end
 
 end

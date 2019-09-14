@@ -1,5 +1,5 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authorized, only: [:create, :index]
+  skip_before_action :authorized, only: [:create, :index, :show]
   before_action :get_user, only: [:show, :update, :destroy]
 
   def index
@@ -12,7 +12,8 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def show
-    render json: @user
+    
+    render json: {user: UserSerializer.new(@user), posts: @user.posts.map{|p| PostSerializer.new(p)}}
   end
 
   def create
