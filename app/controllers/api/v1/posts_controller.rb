@@ -14,8 +14,9 @@ class Api::V1::PostsController < ApplicationController
   def create
     @post = Post.new(post_params[:post_info])
     if @post.save
-      @post.update_post_tags(post_params[:post_tags_attributes])
-
+      if post_params[:post_tags_attributes]
+        @post.update_post_tags(post_params[:post_tags_attributes])
+      end
       render json: @post, status: :created
     else
       render json: {errors: @post.errors.full_messages, status: :unprocessible_entity}, status: :unprocessible_entity

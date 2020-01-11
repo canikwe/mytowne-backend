@@ -11,7 +11,7 @@ class PostSerializer < ActiveModel::Serializer
 
   def likes
     self.object.likes.map do |like|
-      {id: like.id, user_id: like.user_id, post_id: like.post_id}
+      {id: like.id, user_id: like.user_id, post_id: like.post_id, created_at: like.created_at}
     end
   end
 
