@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApplicationController
   skip_before_action :authorized, only: [:create, :index, :show]
-  before_action :get_user, only: [:show, :update, :destroy]
+  before_action :get_user, only: [:show]
 
   def index
     @users = User.all
@@ -12,7 +12,6 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def show
-    
     render json: {user: UserSerializer.new(@user), posts: @user.posts.map{|p| PostSerializer.new(p)}}
   end
 
@@ -27,8 +26,10 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def update
-    @user.update(user_params)
-    render json: @user
+    if @user.valid?
+      @user.update(user_params)
+      render json: @user
+    end
   end
 
   def destroy

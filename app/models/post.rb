@@ -26,8 +26,4 @@ class Post < ApplicationRecord
     end
   end
 
-  def authorized_user?(current_user)
-    self.user == current_user
-  end
-
 end
