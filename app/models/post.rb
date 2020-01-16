@@ -24,7 +24,10 @@ class Post < ApplicationRecord
         PostTag.find_or_create_by!(post: self, tag_id: tag.id)
       end
     end
+  end
 
+  def authorized_user?(current_user)
+    self.user == current_user
   end
 
 end

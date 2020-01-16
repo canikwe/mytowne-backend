@@ -24,7 +24,11 @@ class Api::V1::PostsController < ApplicationController
   end
 
   def update
-    if @post.update(post_params[:post_info])
+    if !@post.authorized_user?(@user)
+      @post.errors.add(:unauthorized, "Sorry, you can't update this post")
+
+      render json: {post: @post, errors: @post.errors.full_messages, status: :unauthorized}, status: :unauthorized
+    elsif @post.authorized_user?(@user) && @post.update(post_params[:post_info])
       @post.update_post_tags(post_params[:post_tags_attributes])
 
       #Remove any unused tags upon update
