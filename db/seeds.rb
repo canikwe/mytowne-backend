@@ -397,6 +397,10 @@ p20.tags = [tag3, tag4]
   post.tags = [Tag.all.sample, Tag.all.sample, Tag.all.sample].uniq
 end
 
+20.times do
+  Post.all.sample.user_likes = [User.all.sample, User.all.sample, User.all.sample, User.all.sample].uniq
+end
+
 # Post.all.each do |post|
 #   post.tags = [Tag.all.sample, Tag.all.sample].uniq
 # end
