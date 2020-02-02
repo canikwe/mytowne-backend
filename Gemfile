@@ -51,3 +51,6 @@ gem "jwt", "~> 2.1"
 
 # Used for seed data
 gem "faker"
+gem 'unsplash'
+
+gem 'awesome_print'

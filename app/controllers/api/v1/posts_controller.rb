@@ -41,6 +41,7 @@ class Api::V1::PostsController < ApplicationController
   end
   
   def destroy
+    
     post = @post
     @post.destroy
     render json: post
@@ -58,7 +59,7 @@ class Api::V1::PostsController < ApplicationController
 
   def authorize_user
     if @post.user != @user
-      @post.errors.add(:unauthorized, "Sorry, you can't update this post")
+      @post.errors.add(:not_authorized, "to change this post.")
 
       render json: {post: @post, errors: @post.errors.full_messages, status: :unauthorized}, status: :unauthorized
     end
