@@ -12,7 +12,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def show
-    render json: {user: UserSerializer.new(@user), liked_posts: @user.likes.map{|l| PostSerializer.new(l.post)}}
+    render json: {user: UserSerializer.new(@user), liked_posts: @user.likes.sort {|a,b| b.created_at <=> a.created_at }.map{|l| PostSerializer.new(l.post)}}
   end
 
   def create
