@@ -8,6 +8,8 @@ class User < ApplicationRecord
   has_many :followed_tags, dependent: :destroy
   has_many :tags, through: :followed_tags
 
+  has_many :comments
+
   has_secure_password
 
   #Validations

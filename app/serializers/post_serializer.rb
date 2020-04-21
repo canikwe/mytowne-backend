@@ -2,6 +2,7 @@ class PostSerializer < ActiveModel::Serializer
   attributes :id, :title, :content, :img, :created_at, :tags, :user
   has_many :post_tags
   has_many :likes
+  has_many :comments
 
   def tags
     self.object.post_tags.map do |post_tag|
