@@ -17,7 +17,8 @@ class Api::V1::PostsController < ApplicationController
 
     authorize_user
 
-    if @post.save
+    if @post.valid?
+      @post.save
       if post_params[:post_tags_attributes]
         @post.update_post_tags(post_params[:post_tags_attributes])
       end
@@ -41,7 +42,6 @@ class Api::V1::PostsController < ApplicationController
   end
   
   def destroy
-    
     post = @post
     @post.destroy
     render json: post

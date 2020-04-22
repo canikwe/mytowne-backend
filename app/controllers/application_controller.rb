@@ -35,4 +35,8 @@ class ApplicationController < ActionController::API
     render json: { error: 'Please log in' }, status: :unauthorized unless logged_in?
   end
 
+  def failed_validations(obj)
+    render json: {errors: obj.errors.full_messages, status: :unprocessible_entity}, status: :unprocessible_entity
+  end
+
 end
