@@ -28,6 +28,8 @@ class Api::V1::UsersController < ApplicationController
   def update
     if @user.valid?
       @user.update(user_params)
+      @user.tag_ids = params[:tag_ids]
+      @user.save
       render json: @user
     end
   end
@@ -44,7 +46,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:id, :name, :birth_date, :email, :username, :town, :avatar, :bio, :password, :password_confirmation)
+    params.require(:user).permit(:id, :name, :birth_date, :email, :username, :town, :avatar, :bio, :password, :password_confirmation, followed_tag_ids: [])
   end
 
 end
