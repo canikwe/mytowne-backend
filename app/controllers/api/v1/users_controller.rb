@@ -17,7 +17,10 @@ class Api::V1::UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    if @user.save
+    if @user.valid?
+      @user.tag_ids = params[:tag_ids]
+      @user.save
+
       @token = encode_token({ user_id: @user.id })
       render json: { user: UserSerializer.new(@user), jwt: @token }, status: :created
     else
@@ -46,7 +49,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:id, :name, :birth_date, :email, :username, :town, :avatar, :bio, :password, :password_confirmation, followed_tag_ids: [])
+    params.require(:user).permit(:id, :name, :birth_date, :email, :username, :town, :avatar, :bio, :password, :password_confirmation, tag_ids: [])
   end
 
 end
