@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
-  resources :user_follows
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   namespace :api do
     namespace :v1 do
+      resources :user_follows, only: [:create, :destroy]
       resources :comments, only: [:create]
       resources :users, except: [:new, :edit]
       resources :posts, except: [:new, :edit]

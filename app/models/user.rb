@@ -11,7 +11,7 @@ class User < ApplicationRecord
   has_many :comments
 
   has_many :following_users, class_name: 'UserFollow', foreign_key: :follower_id
-  has_many :follows, through: :following_users
+  has_many :follows, through: :following_users, source: :followed
   has_many :followed_users, class_name: 'UserFollow', foreign_key: :followed_id
   has_many :followers, through: :followed_users
 
